@@ -49,5 +49,32 @@ def predict_domain(request: Request, domain_name: str = Form(...)):
             "top_3_predictions": top_3_predictions
         }
     )
+    
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    domain_name = None
+    prediction = None
+    top_3_predictions = []
+    
+    if request.method == "POST":
+        domain_name = request.form.get("domain_name")
+        
+        # Replace the following with your actual prediction logic:
+        prediction = "Malware"  # Example prediction, replace with actual logic
+        top_3_predictions = [
+            {"class": "BotnetA", "probability": 0.85},
+            {"class": "BotnetB", "probability": 0.75},
+            {"class": "BotnetC", "probability": 0.65}
+        ]
+        
+    return render_template("index.html", domain_name=domain_name, prediction=prediction, top_3_predictions=top_3_predictions)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
 
 # uvicorn app:app --reload
